@@ -1,0 +1,52 @@
+{
+  "name": "EXT-VLCServer",
+  "version": "1.0.0",
+  "rev": "240428",
+  "description": "VLC Media Server",
+  "main": "EXT-Librespot.js",
+  "scripts": {
+    "preinstall": "installer/preinstall.sh",
+    "postinstall": "installer/postinstall.sh -b",
+    "update": "installer/update.sh",
+    "setup": "installer/setup.sh",
+    "setup:source": "installer/setup-from-source.sh",
+    "reset": "git reset --hard",
+    "clean": "rm -rf node_modules package-lock.json",
+    "lint": "eslint *.js installer/*.js --config eslint.config.js",
+    "lint:fix": "eslint *.js installer/*.js --config eslint.config.js --fix",
+    "test": "npm run lint",
+    "test:minify": "cd installer && node minify.js"
+  },
+  "keywords": [
+    "MMM-GoogleAssistant",
+    "magic mirror",
+    "module",
+    "VLC",
+    "media",
+    "player"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "author": "bugsounet",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://forum.bugsounet.fr"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bugsounet/EXT-VLCServer"
+  },
+  "homepage": "https://wiki.bugsounet.fr/en/EXT-VLCServer",
+  "dependencies": {
+    "esbuild": "^0.20.2",
+    "glob": "^10.3.12",
+    "pm2": "^5.3.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^8.57.0",
+    "@stylistic/eslint-plugin": "^1.7.2",
+    "eslint": "^8.57.0",
+    "eslint-plugin-import": "^2.29.1"
+  }
+}
