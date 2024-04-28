@@ -6,7 +6,7 @@
   "main": "EXT-VLCServer.js",
   "scripts": {
     "preinstall": "installer/preinstall.sh",
-    "postinstall": "installer/postinstall.sh -b",
+    "postinstall": "installer/postinstall.sh -b -m",
     "update": "installer/update.sh",
     "setup": "installer/setup.sh",
     "setup:source": "installer/setup-from-source.sh",
