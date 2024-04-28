@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "rev": "240428",
   "description": "VLC Media Server",
-  "main": "EXT-Librespot.js",
+  "main": "EXT-VLCServer.js",
   "scripts": {
     "preinstall": "installer/preinstall.sh",
     "postinstall": "installer/postinstall.sh -b",
