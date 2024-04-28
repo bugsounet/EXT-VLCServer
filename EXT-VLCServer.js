@@ -18,12 +18,29 @@ Module.register("EXT-VLCServer", {
   },
 
   notificationReceived (noti, payload, sender) {
-    switch(noti) {
+    switch (noti) {
       case "GA_READY":
         if (sender.name === "MMM-GoogleAssistant") {
           this.sendSocketNotification("INIT", this.config);
           this.sendNotification("EXT_HELLO", this.name);
         }
+        break;
+    }
+  },
+
+  socketNotificationReceived (noti, payload) {
+    switch (noti) {
+      case "ERROR":
+        console.log(`[VLC] [ERROR] ${payload}`);
+        break;
+      case "WARNING":
+        console.log(`[VLC] [WARNING] ${payload}`);
+        break;
+      case "STARTED":
+        this.sendNotification("EXT_VLCSERVER-START");
+        break;
+      case "CLOSED":
+        this.sendNotification("EXT_VLCSERVER-CLOSE");
         break;
     }
   }

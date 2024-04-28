@@ -11,6 +11,7 @@ module.exports = NodeHelper.create({
   start () {
     this.pm2 = pm2;
     this.VLCPath = null;
+    this.ServerStarted = false;
   },
 
   stop () {
@@ -48,56 +49,76 @@ module.exports = NodeHelper.create({
 
     if (!fs.existsSync(this.VLCPath)) {
       console.error("[VLC] VLC is not installed or not found!");
-      this.sendSocketNotification("WARNING" , { message: "VLCNoInstalled" }); // not coded
+      this.sendSocketNotification("WARNING" , { message: "VLC_NotInstalled" });
       return;
     }
-    console.log("[VLC] Found VLC in", this.VLCPath);
+    log("Found VLC in", this.VLCPath);
     this.pm2.connect((err) => {
       if (err) return console.error("[VLC]", err);
-      this.pm2.list((err,list) => {
-        if (err) return console.error("[VLC]", err);
-        if (list && Object.keys(list).length > 0) {
-          for (let [item, info] of Object.entries(list)) {
-            if (info.name === "VLCServer" && info.pid) {
-              return console.log("[VLC] VLC Http Server already Started!");
+      this.VLCStart();
+
+      this.pm2.launchBus((err, pm2_bus) => {
+        if (err) return console.error("[VLC] Bus connect error", err);
+        log("Bus Listener connected");
+        pm2_bus.on("process:event", (packet) => {
+          if (packet.process.name === "VLCServer") {
+            //console.log(`[VLC] Event: ${packet.event} Status: ${packet.process.status}`)
+            if (packet.process.status === "online") {
+              if (!this.ServerStarted) {
+                console.log(`[VLC] VLC Http Server Started! (id:${packet.process.pm_id})`);
+                this.sendSocketNotification("STARTED");
+              }
+              this.ServerStarted = true;
+            } else {
+              if (this.ServerStarted) {
+                console.error(`[VLC] VLC Http Server Close! (id:${packet.process.pm_id})`);
+                this.sendSocketNotification("ERROR" , { message: "VLC_Close" });
+                this.sendSocketNotification("CLOSED");
+              }
+              this.ServerStarted = false;
             }
           }
-        }
-        this.VLCStart();
+        });
+        pm2_bus.on("log:err", (packet) => {
+          if (packet.process.name === "VLCServer") {
+            if (packet.data.includes("main interface error:")) {
+              console.error("[VLC]", packet.data);
+              this.sendSocketNotification("ERROR" , { message: "VLC_Error" });
+            } else {
+              log("[VLC]", packet.data);
+            }
+          }
+        });
       });
     });
   },
 
   VLCStart () {
     this.pm2.start({
-	  script: this.VLCPath,
-	  name: "VLCServer",
-	  out_file: "/dev/null",
-	  args: [
-	    "-I http",
-	    "--extraintf",
-        "http",
-	    "--http-port",
-        8082,
-	    "--http-host",
-        "127.0.0.1",
-	    "--http-password",
-        "EXT-VLCServer"
-	  ]
+      script: this.VLCPath,
+      name: "VLCServer",
+      out_file: "/dev/null",
+      /* eslint-disable @stylistic/array-element-newline */
+      args: [
+        "-I http",
+        "--extraintf", "http",
+        "--http-port", 8082,
+        "--http-host", "127.0.0.1",
+        "--http-password", "EXT-VLCServer"
+      ]
+      /* eslint-enable @stylistic/array-element-newline */
     }, (err, proc) => {
-	  if (err) {
+      if (err) {
         this.sendSocketNotification("WARNING" , { message: "VLCError", values: err.toString() });
         console.error(`[VLC] ${err}`);
-        return;
-	  }
-	  console.log("[VLC] VLC Http Server Started!");
+      }
     });
   },
 
   VLCRestart () {
     this.pm2.restart("VLCServer", (err, proc) => {
-      if (err) console.error(`[VLC] Error: ${err}`);
-      else console.log("[VLC] VLC Http Server Restarted!");
+      if (err) return console.error(`[VLC] Error: ${err}`);
+      console.log("[VLC] VLC Http Server Restarted!");
     });
   }
 });
