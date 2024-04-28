@@ -63,31 +63,35 @@ module.exports = NodeHelper.create({
             }
           }
         }
-        this.VLCStart()
+        this.VLCStart();
       });
     });
   },
 
   VLCStart () {
-	this.pm2.start({
+    this.pm2.start({
 	  script: this.VLCPath,
 	  name: "VLCServer",
 	  out_file: "/dev/null",
 	  args: [
 	    "-I http",
-	    "--extraintf", "http",
-	    "--http-port", 8082,
-	    "--http-host", "127.0.0.1",
-	    "--http-password", "EXT-VLCServer"
+	    "--extraintf",
+        "http",
+	    "--http-port",
+        8082,
+	    "--http-host",
+        "127.0.0.1",
+	    "--http-password",
+        "EXT-VLCServer"
 	  ]
-	}, (err, proc) => {
+    }, (err, proc) => {
 	  if (err) {
-		this.sendSocketNotification("WARNING" , { message: "VLCError", values: err.toString() });
-		console.error(`[VLC] ${err}`);
-		return;
+        this.sendSocketNotification("WARNING" , { message: "VLCError", values: err.toString() });
+        console.error(`[VLC] ${err}`);
+        return;
 	  }
 	  console.log("[VLC] VLC Http Server Started!");
-	});
+    });
   },
 
   VLCRestart () {
