@@ -71,7 +71,7 @@ module.exports = NodeHelper.create({
               this.ServerStarted = true;
             } else {
               if (this.ServerStarted) {
-                console.error(`[VLC] VLC Http Server Close! (id:${packet.process.pm_id})`);
+                console.error(`[VLC] VLC Http Server Closed! (id:${packet.process.pm_id})`);
                 this.sendSocketNotification("ERROR" , { message: "VLC_Close" });
                 this.sendSocketNotification("CLOSED");
               }
@@ -83,9 +83,9 @@ module.exports = NodeHelper.create({
           if (packet.process.name === "VLCServer") {
             if (packet.data.includes("main interface error:")) {
               console.error("[VLC]", packet.data);
-              this.sendSocketNotification("ERROR" , { message: "VLC_Error" });
+              this.sendSocketNotification("ERROR" , { message: "VLC_ErrorPacket" });
             } else {
-              log("[VLC]", packet.data);
+              log("[PACKET DATA]", packet.data);
             }
           }
         });
@@ -102,14 +102,14 @@ module.exports = NodeHelper.create({
       args: [
         "-I http",
         "--extraintf", "http",
-        "--http-port", 8082,
+        "--http-port", 8081,
         "--http-host", "127.0.0.1",
         "--http-password", "EXT-VLCServer"
       ]
       /* eslint-enable @stylistic/array-element-newline */
     }, (err, proc) => {
       if (err) {
-        this.sendSocketNotification("WARNING" , { message: "VLCError", values: err.toString() });
+        this.sendSocketNotification("WARNING" , { message: "VLCError", values: err.message });
         console.error(`[VLC] ${err}`);
       }
     });
