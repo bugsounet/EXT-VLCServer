@@ -102,7 +102,7 @@ module.exports = NodeHelper.create({
       args: [
         "-I http",
         "--extraintf", "http",
-        "--http-port", 8081,
+        "--http-port", 8082,
         "--http-host", "127.0.0.1",
         "--http-password", "EXT-VLCServer"
       ]
