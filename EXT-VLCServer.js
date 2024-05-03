@@ -46,7 +46,7 @@ Module.register("EXT-VLCServer", {
         });
         break;
       case "WARNING":
-        console.warn(`[VLC] [WARNING] this.translate(payload.message, { VALUES: payload.values })`);
+        console.warn(`[VLC] [WARNING] ${this.translate(payload.message, { VALUES: payload.values })}`);
         this.sendNotification("EXT_ALERT", {
           type: "warning",
           message: this.translate(payload.message, { VALUES: payload.values }),
