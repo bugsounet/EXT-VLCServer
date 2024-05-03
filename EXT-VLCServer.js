@@ -38,20 +38,20 @@ Module.register("EXT-VLCServer", {
   socketNotificationReceived (noti, payload) {
     switch (noti) {
       case "ERROR":
-        console.error(`[VLC] [ERROR] ${this.translate(payload.message)}`);
         this.sendNotification("EXT_ALERT", {
           type: "error",
           message: this.translate(payload.message),
           timer: 10000
         });
+        console.error(`[VLC] [ERROR] ${this.translate(payload.message)}`);
         break;
       case "WARNING":
-        console.warn(`[VLC] [WARNING] ${this.translate(payload.message, { VALUES: payload.values })}`);
         this.sendNotification("EXT_ALERT", {
           type: "warning",
           message: this.translate(payload.message, { VALUES: payload.values }),
           timer: 10000
         });
+        console.warn(`[VLC] [WARNING] ${this.translate(payload.message, { VALUES: payload.values })}`);
         break;
       case "STARTED":
         this.sendNotification("EXT_VLCSERVER-START");
