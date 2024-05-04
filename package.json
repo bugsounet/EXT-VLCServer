@@ -1,15 +1,13 @@
 {
   "name": "EXT-VLCServer",
   "version": "1.0.0",
-  "rev": "240428",
-  "description": "VLC Media Server",
+  "rev": "240504",
+  "description": "VLC Media Server plugin for MMM-GoogleAssistant",
   "main": "EXT-VLCServer.js",
   "scripts": {
-    "preinstall": "installer/preinstall.sh",
+    "preinstall": "installer/preinstall.sh -d 'vlc`",
     "postinstall": "installer/postinstall.sh -b -m",
     "update": "installer/update.sh",
-    "setup": "installer/setup.sh",
-    "setup:source": "installer/setup-from-source.sh",
     "reset": "git reset --hard",
     "clean": "rm -rf node_modules package-lock.json",
     "lint": "eslint *.js installer/*.js --config eslint.config.js",
