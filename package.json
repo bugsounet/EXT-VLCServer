@@ -5,7 +5,7 @@
   "description": "VLC Media Server plugin for MMM-GoogleAssistant",
   "main": "EXT-VLCServer.js",
   "scripts": {
-    "preinstall": "installer/preinstall.sh -d 'vlc`",
+    "preinstall": "installer/preinstall.sh -d 'vlc'",
     "postinstall": "installer/postinstall.sh -b -m",
     "update": "installer/update.sh",
     "reset": "git reset --hard",
