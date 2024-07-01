@@ -111,6 +111,8 @@ module.exports = NodeHelper.create({
       if (err) {
         this.sendSocketNotification("WARNING" , { message: "VLCError", values: err.message });
         console.error(`[VLC] ${err}`);
+      } else {
+        console.log("[VLC] Start listening on port 8082");
       }
     });
   },
