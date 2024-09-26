@@ -37,7 +37,7 @@
   },
   "homepage": "https://wiki.bugsounet.fr/en/EXT-VLCServer",
   "dependencies": {
-    "esbuild": "^0.23.1",
+    "esbuild": "^0.24.0",
     "glob": "^10.4.5",
     "pm2": "^5.4.2"
   },
