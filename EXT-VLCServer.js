@@ -38,7 +38,7 @@ Module.register("EXT-VLCServer", {
   socketNotificationReceived (noti, payload) {
     switch (noti) {
       case "ERROR":
-        this.sendNotification("EXT_ALERT", {
+        this.sendNotification("GA_ALERT", {
           type: "error",
           message: this.translate(payload.message),
           timer: 10000
@@ -46,7 +46,7 @@ Module.register("EXT-VLCServer", {
         console.error(`[VLC] [ERROR] ${this.translate(payload.message)}`);
         break;
       case "WARNING":
-        this.sendNotification("EXT_ALERT", {
+        this.sendNotification("GA_ALERT", {
           type: "warning",
           message: this.translate(payload.message, { VALUES: payload.values }),
           timer: 10000
