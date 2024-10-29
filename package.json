@@ -1,7 +1,7 @@
 {
   "name": "EXT-VLCServer",
-  "version": "1.1.0",
-  "rev": "240701",
+  "version": "1.2.0",
+  "rev": "241029",
   "description": "VLC Media Server plugin for MMM-GoogleAssistant",
   "main": "EXT-VLCServer.js",
   "scripts": {
@@ -42,9 +42,8 @@
     "pm2": "^5.4.2"
   },
   "devDependencies": {
-    "@eslint/js": "^8.57.1",
-    "@stylistic/eslint-plugin": "^1.8.1",
-    "eslint": "^8.57.1",
-    "eslint-plugin-import": "^2.29.1"
+    "@stylistic/eslint-plugin": "^2.9.0",
+    "eslint": "^9.13.0",
+    "eslint-plugin-import": "^2.31.0"
   }
 }
