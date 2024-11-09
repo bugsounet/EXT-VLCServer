@@ -11,9 +11,6 @@ This plugin is an Extented plugins for:
   * `EXT-RadioPlayer`
   * `EXT-FreeboxTV`
 
-In addition, you can use some plugins:
-  * `EXT-Alert` for display some information or error on your screen (Optional)
-
 # Installation / update / configuration
 
 Read the docs in [wiki](https://wiki.bugsounet.fr/EXT-VLCServer)
