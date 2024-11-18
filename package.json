@@ -39,7 +39,7 @@
   "dependencies": {
     "esbuild": "^0.24.0",
     "glob": "^11.0.0",
-    "pm2": "^5.4.2"
+    "pm2": "^5.4.3"
   },
   "devDependencies": {
     "@stylistic/eslint-plugin": "^2.9.0",
