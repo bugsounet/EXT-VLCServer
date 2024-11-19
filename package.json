@@ -1,7 +1,7 @@
 {
   "name": "EXT-VLCServer",
-  "version": "1.2.0",
-  "rev": "241029",
+  "version": "1.2.1",
+  "rev": "241119",
   "description": "VLC Media Server plugin for MMM-GoogleAssistant",
   "main": "EXT-VLCServer.js",
   "scripts": {
