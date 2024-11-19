@@ -5,7 +5,7 @@ const fs = require("fs");
 var NodeHelper = require("node_helper");
 const pm2 = require("pm2");
 
-var log = (...args) => { /* do nothing */ };
+var log = () => { /* do nothing */ };
 
 module.exports = NodeHelper.create({
   start () {
@@ -16,7 +16,7 @@ module.exports = NodeHelper.create({
 
   stop () {
     console.log("[VLC] Try to close VLCServer!");
-    this.pm2.stop("VLCServer", (e,p) => {
+    this.pm2.stop("VLCServer", (e) => {
       if (e) {
         console.error("[VLC] Error: VLCServer can't stop !");
         console.error("[VLC] Detail:", e);
@@ -27,7 +27,7 @@ module.exports = NodeHelper.create({
   socketNotificationReceived (noti, payload) {
     switch (noti) {
       case "INIT":
-        this.config= payload;
+        this.config = payload;
         console.log("[VLC] EXT-VLCServer Version:", require("./package.json").version, "rev:", require("./package.json").rev);
         this.initialize();
         break;
@@ -49,7 +49,7 @@ module.exports = NodeHelper.create({
 
     if (!fs.existsSync(this.VLCPath)) {
       console.error("[VLC] VLC is not installed or not found!");
-      this.sendSocketNotification("WARNING" , { message: "VLC_NotInstalled" });
+      this.sendSocketNotification("WARNING", { message: "VLC_NotInstalled" });
       return;
     }
     log("Found VLC in", this.VLCPath);
@@ -72,7 +72,7 @@ module.exports = NodeHelper.create({
             } else {
               if (this.ServerStarted) {
                 console.error(`[VLC] VLC Http Server Closed! (id:${packet.process.pm_id})`);
-                this.sendSocketNotification("ERROR" , { message: "VLC_Close" });
+                this.sendSocketNotification("ERROR", { message: "VLC_Close" });
                 this.sendSocketNotification("CLOSED");
               }
               this.ServerStarted = false;
@@ -83,7 +83,7 @@ module.exports = NodeHelper.create({
           if (packet.process.name === "VLCServer") {
             if (packet.data.includes("main interface error:")) {
               console.error("[VLC]", packet.data);
-              this.sendSocketNotification("ERROR" , { message: "VLC_ErrorPacket" });
+              this.sendSocketNotification("ERROR", { message: "VLC_ErrorPacket" });
             } else {
               log("[PACKET DATA]", packet.data);
             }
@@ -107,9 +107,9 @@ module.exports = NodeHelper.create({
         "--http-password", "EXT-VLCServer"
       ]
       /* eslint-enable @stylistic/array-element-newline */
-    }, (err, proc) => {
+    }, (err) => {
       if (err) {
-        this.sendSocketNotification("WARNING" , { message: "VLCError", values: err.message });
+        this.sendSocketNotification("WARNING", { message: "VLCError", values: err.message });
         console.error(`[VLC] ${err}`);
       } else {
         console.log("[VLC] Start listening on port 8082");
@@ -118,7 +118,7 @@ module.exports = NodeHelper.create({
   },
 
   VLCRestart () {
-    this.pm2.restart("VLCServer", (err, proc) => {
+    this.pm2.restart("VLCServer", (err) => {
       if (err) return console.error(`[VLC] Error: ${err}`);
       console.log("[VLC] VLC Http Server Restarted!");
     });
